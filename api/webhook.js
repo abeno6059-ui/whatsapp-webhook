@@ -2,9 +2,7 @@ export default async function handler(req, res) {
   if (req.method === "GET") {
     const VERIFY_TOKEN = "mon_token_123";
 
-    const mode = req.query["hub.mode"];
-    const token = req.query["hub.verify_token"];
-    const challenge = req.query["hub.challenge"];
+    const { ["hub.mode"]: mode, ["hub.verify_token"]: token, ["hub.challenge"]: challenge } = req.query;
 
     if (mode === "subscribe" && token === VERIFY_TOKEN) {
       return res.status(200).send(challenge);
@@ -14,18 +12,28 @@ export default async function handler(req, res) {
   }
 
   if (req.method === "POST") {
-    const response = await fetch(
-      "https://personnel2026what2026ak.app.n8n.cloud/webhook/whatsapp",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(req.body),
-      }
-    );
+    try {
+      console.log("Received webhook:", JSON.stringify(req.body));
 
-    return res.status(response.status).send("EVENT_RECEIVED");
+      const response = await fetch(
+        "https://personnel2026what2026ak.app.n8n.cloud/webhook/whatsapp",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(req.body),
+        }
+      );
+
+      const text = await response.text();
+      console.log("n8n response:", response.status, text);
+
+      return res.status(200).send("EVENT_RECEIVED");
+    } catch (err) {
+      console.error("Webhook error:", err);
+      return res.status(500).send(err.message);
+    }
   }
 
   return res.status(405).send("Method Not Allowed");
