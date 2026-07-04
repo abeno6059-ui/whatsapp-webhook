@@ -29,7 +29,10 @@ export default async function handler(req, res) {
       const text = await response.text();
       console.log("n8n response:", response.status, text);
 
-      return res.status(200).send("EVENT_RECEIVED");
+      return res.status(200).json({
+  ok: true,
+  body: req.body,
+});
     } catch (err) {
       console.error("Webhook error:", err);
       return res.status(500).send(err.message);
