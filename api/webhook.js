@@ -16,14 +16,33 @@ export default async function handler(req, res) {
     return res.status(403).send("Forbidden");
   }
 
-  if (req.method === "POST") {
-    console.log("BODY:");
-    console.log(JSON.stringify(req.body));
+ if (req.method === "POST") {
+  console.log("===== WEBHOOK CALLED =====");
+  console.log("BODY:", JSON.stringify(req.body));
 
-    return res.status(200).json({
-      success: true,
-    });
+  try {
+    const response = await fetch(
+      "https://personnel2026what2026ak.app.n8n.cloud/webhook/whatsapp",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(req.body),
+      }
+    );
+
+    const text = await response.text();
+
+    console.log("n8n Status:", response.status);
+    console.log("n8n Response:", text);
+
+  } catch (err) {
+    console.error("FETCH ERROR:", err);
   }
+
+  return res.status(200).send("OK");
+}
 
   return res.status(405).send("Method Not Allowed");
 }
