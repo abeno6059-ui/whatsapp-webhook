@@ -21,10 +21,9 @@ export default async function handler(req, res) {
     console.log("HAS_MESSAGES:", !!value?.messages);
     console.log("HAS_STATUSES:", !!value?.statuses);
 
-    console.log(
-      "EVENT:",
-      JSON.stringify(value, null, 2)
-    );
+    console.log("MESSAGE ID:", value?.messages?.[0]?.id);
+console.log("TIMESTAMP:", value?.messages?.[0]?.timestamp);
+console.log("TEXT:", value?.messages?.[0]?.text?.body);
 
     return res.status(200).send("OK");
   }
