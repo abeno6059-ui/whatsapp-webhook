@@ -18,7 +18,10 @@ export default async function handler(req, res) {
 
  if (req.method === "POST") {
   console.log("===== WEBHOOK CALLED =====");
-  console.log("BODY:", JSON.stringify(req.body));
+  const value = req.body?.entry?.[0]?.changes?.[0]?.value;
+
+console.log("HAS_MESSAGES:", !!value?.messages);
+console.log("HAS_STATUSES:", !!value?.statuses);
 
   if (req.method === "POST") {
   console.log(
