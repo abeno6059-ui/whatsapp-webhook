@@ -21,7 +21,10 @@ export default async function handler(req, res) {
   console.log("BODY:", JSON.stringify(req.body));
 
   if (req.method === "POST") {
-  console.log("BODY:", JSON.stringify(req.body));
+  console.log(
+  "EVENT:",
+  JSON.stringify(req.body.entry?.[0]?.changes?.[0]?.value, null, 2)
+);
 
   return res.status(200).send("OK");
 }
