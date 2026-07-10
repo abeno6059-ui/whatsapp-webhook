@@ -20,10 +20,11 @@ export default async function handler(req, res) {
   console.log("===== WEBHOOK CALLED =====");
   console.log("BODY:", JSON.stringify(req.body));
 
-  try {
-    const response = await fetch(
-      "https://personnel2026what2026ak.app.n8n.cloud/webhook/whatsapp",
-      {
+  if (req.method === "POST") {
+  console.log("BODY:", JSON.stringify(req.body));
+
+  return res.status(200).send("OK");
+}
         method: "POST",
         headers: {
           "Content-Type": "application/json",
