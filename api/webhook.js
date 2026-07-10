@@ -21,9 +21,27 @@ export default async function handler(req, res) {
     console.log("HAS_MESSAGES:", !!value?.messages);
     console.log("HAS_STATUSES:", !!value?.statuses);
 
-    console.log("MESSAGE ID:", value?.messages?.[0]?.id);
-console.log("TIMESTAMP:", value?.messages?.[0]?.timestamp);
-console.log("TEXT:", value?.messages?.[0]?.text?.body);
+    // تجاهل أي حدث ما فيهش رسالة
+    if (!value?.messages) {
+      return res.status(200).send("OK");
+    }
+
+    try {
+      const response = await fetch(
+        "https://personnel2026what2026ak.app.n8n.cloud/webhook/whatsapp",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(req.body),
+        }
+      );
+
+      console.log("n8n Status:", response.status);
+    } catch (err) {
+      console.error("FETCH ERROR:", err);
+    }
 
     return res.status(200).send("OK");
   }
