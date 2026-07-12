@@ -28,7 +28,7 @@ export default async function handler(req, res) {
 
     try {
       const response = await fetch(
-        "https://personnel2026what2026ak.app.n8n.cloud/webhook/whatsapp",
+        "https://incom-dora15.app.n8n.cloud/webhook/whatsapp",
         {
           method: "POST",
           headers: {
